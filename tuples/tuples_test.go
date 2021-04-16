@@ -2,6 +2,7 @@ package tuples
 
 import (
 	"fmt"
+	"math"
 	"testing"
 )
 
@@ -102,7 +103,7 @@ func TestAdd(t *testing.T) {
 			testTup.b.x, testTup.b.y, testTup.b.z, testTup.b.w,
 			testTup.result.x, testTup.result.y, testTup.result.z, testTup.result.w)
 		t.Run(testName, func(t *testing.T) {
-			if !(TupleEquals(Add(testTup.a, testTup.b), testTup.result)) {
+			if !TupleEquals(Add(testTup.a, testTup.b), testTup.result) {
 				t.Errorf("Cannot correctly add tuples using standalone function!")
 			}
 		})
@@ -124,7 +125,7 @@ func TestSubtract(t *testing.T) {
 			testTup.b.x, testTup.b.y, testTup.b.z, testTup.b.w,
 			testTup.result.x, testTup.result.y, testTup.result.z, testTup.result.w)
 		t.Run(testName, func(t *testing.T) {
-			if !(TupleEquals(Subtract(testTup.a, testTup.b), testTup.result)) {
+			if !TupleEquals(Subtract(testTup.a, testTup.b), testTup.result) {
 				t.Errorf("Cannot correctly subtract tuples using standalone function!")
 			}
 		})
@@ -146,29 +147,151 @@ func TestNegate(t *testing.T) {
 
 			testTup.result.x, testTup.result.y, testTup.result.z, testTup.result.w)
 		t.Run(testName, func(t *testing.T) {
-			if TupleEquals(testTup.a, testTup.result) {
-				t.Errorf("Cannot correctly subtract tuples using standalone function!")
+			testTup.a.Negate()
+			if !TupleEquals(testTup.a, testTup.result) {
+				t.Errorf("Cannot correctly Negate tuples using standalone function!")
 			}
 		})
 	}
 }
 
 func TestMultiply(t *testing.T) {
+	var testTuples = []struct {
+		a      Tuple
+		scalar float64
+		result Tuple
+	}{
+		{Tuple{1.0, -2.0, 3.0, -4.0}, 3.5, Tuple{3.5, -7.0, 10.5, -14.0}},
+		{Tuple{1.0, -2.0, 3.0, -4.0}, 0.5, Tuple{0.5, -1.0, 1.5, -2.0}},
+	}
 
+	for _, testTup := range testTuples {
+		testName := fmt.Sprintf("Multiplying Tuple {%v, %v, %v, %v} by Scalar %v (Expected Result Tuple {%v, %v, %v, %v})",
+			testTup.a.x, testTup.a.y, testTup.a.z, testTup.a.w,
+			testTup.scalar,
+			testTup.result.x, testTup.result.y, testTup.result.z, testTup.result.w)
+		t.Run(testName, func(t *testing.T) {
+			testTup.a.Multiply(testTup.scalar)
+			if !TupleEquals(testTup.a, testTup.result) {
+				t.Errorf("Cannot correctly Multiply tuples using standalone function!")
+			}
+		})
+	}
 }
 
 func TestDivide(t *testing.T) {
+	var testTuples = []struct {
+		a      Tuple
+		scalar float64
+		result Tuple
+	}{
+		{Tuple{1.0, -2.0, 3.0, -4.0}, 0.5, Tuple{2.0, -4.0, 6.0, -8.0}},
+		{Tuple{1.0, -2.0, 3.0, -4.0}, 2.0, Tuple{0.5, -1.0, 1.5, -2.0}},
+	}
 
+	for _, testTup := range testTuples {
+		testName := fmt.Sprintf("Dividing Tuple {%v, %v, %v, %v} by Scalar %v (Expected Result Tuple {%v, %v, %v, %v})",
+			testTup.a.x, testTup.a.y, testTup.a.z, testTup.a.w,
+			testTup.scalar,
+			testTup.result.x, testTup.result.y, testTup.result.z, testTup.result.w)
+		t.Run(testName, func(t *testing.T) {
+			testTup.a.Divide(testTup.scalar)
+			if !TupleEquals(testTup.a, testTup.result) {
+				t.Errorf("Cannot correctly Divide tuples using standalone function!")
+			}
+		})
+	}
 }
 
 func TestMagnitude(t *testing.T) {
+	var testTuples = []struct {
+		a      Tuple
+		result float64
+	}{
+		{Tuple{1.0, 0.0, 0.0, 1.0}, 1.0},
+		{Tuple{0.0, 1.0, 0.0, 1.0}, 1.0},
+		{Tuple{0.0, 0.0, 1.0, 1.0}, 1.0},
+		{Tuple{1.0, 2.0, 3.0, 1.0}, math.Sqrt(14.0)},
+		{Tuple{-1.0, -2.0, -3.0, 1.0}, math.Sqrt(14.0)},
+	}
 
+	for _, testTup := range testTuples {
+		testName := fmt.Sprintf("Computing Magnitude for Tuple {%v, %v, %v, %v} (Expected Result %v)",
+			testTup.a.x, testTup.a.y, testTup.a.z, testTup.a.w,
+			testTup.result)
+		t.Run(testName, func(t *testing.T) {
+			mag := testTup.a.Magnitude()
+			if !Equals(mag, testTup.result) {
+				t.Errorf("Cannot correctly compute Magnitude for tuples using standalone function! Tuple: {%v,%v,%v,%v}; Calculated magnitude: %v; Expected Magnitude: %v",
+					testTup.a.x, testTup.a.y, testTup.a.z, testTup.a.w, mag, testTup.result)
+			}
+		})
+	}
+}
+
+func TestNormalize(t *testing.T) {
+	var testTuples = []struct {
+		a, result Tuple
+	}{
+		{Tuple{4.0, 0.0, 0.0, 1.0}, Tuple{1.0, 0.0, 0.0, 1.0}},
+		{Tuple{1.0, 2.0, 3.0, 1.0}, Tuple{1.0 / math.Sqrt(14.0), 2.0 / math.Sqrt(14.0), 3.0 / math.Sqrt(14.0), 1.0}},
+	}
+
+	for _, testTup := range testTuples {
+		testName := fmt.Sprintf("Normalizing Tuple {%v, %v, %v, %v} (Expected Result Tuple {%v, %v, %v, %v})",
+			testTup.a.x, testTup.a.y, testTup.a.z, testTup.a.w,
+			testTup.result.x, testTup.result.y, testTup.result.z, testTup.result.w)
+		t.Run(testName, func(t *testing.T) {
+			normed := testTup.a.Normalize()
+			if !TupleEquals(normed, testTup.result) {
+				t.Errorf("Cannot correctly Normalize tuples using standalone function! Tuple values are {%v, %v, %v, %v}",
+					normed.x, normed.y, normed.z, normed.w)
+			}
+		})
+	}
 }
 
 func TestDot(t *testing.T) {
+	var testTuples = []struct {
+		a, b   Tuple
+		result float64
+	}{
+		{Tuple{1.0, 2.0, 3.0, 0.0}, Tuple{2.0, 3.0, 4.0, 0.0}, 20.0},
+	}
 
+	for _, testTup := range testTuples {
+		testName := fmt.Sprintf("Dotting Tuple {%v, %v, %v, %v} with Tuple {%v, %v, %v, %v}, Expected Product: %v",
+			testTup.a.x, testTup.a.y, testTup.a.z, testTup.a.w,
+			testTup.b.x, testTup.b.y, testTup.b.z, testTup.b.w,
+			testTup.result)
+		t.Run(testName, func(t *testing.T) {
+			dotProduct := Dot(testTup.a, testTup.b)
+			if !Equals(dotProduct, testTup.result) {
+				t.Errorf("Cannot correctly Dot tuples using standalone function! Dot product: %v",
+					dotProduct)
+			}
+		})
+	}
 }
 
 func TestCross(t *testing.T) {
+	var testTuples = []struct {
+		a, b, result Tuple
+	}{
+		{Tuple{1.0, 2.0, 3.0, 0.0}, Tuple{2.0, 3.0, 4.0, 0.0}, Tuple{-1.0, 2.0, -1.0, 0.0}},
+		{Tuple{2.0, 3.0, 4.0, 0.0}, Tuple{1.0, 2.0, 3.0, 0.0}, Tuple{1.0, -2.0, 1.0, 0.0}},
+	}
 
+	for _, testTup := range testTuples {
+		testName := fmt.Sprintf("Crossing Tuple {%v, %v, %v, %v} with Tuple {%v, %v, %v, %v}",
+			testTup.a.x, testTup.a.y, testTup.a.z, testTup.a.w,
+			testTup.b.x, testTup.b.y, testTup.b.z, testTup.b.w)
+		t.Run(testName, func(t *testing.T) {
+			crossProduct := Cross(testTup.a, testTup.b)
+			if !TupleEquals(crossProduct, testTup.result) {
+				t.Errorf("Cannot correctly Dot tuples using standalone function! Cross product: Tuple{%v,%v,%v,%v}",
+					crossProduct.x, crossProduct.y, crossProduct.z, crossProduct.w)
+			}
+		})
+	}
 }

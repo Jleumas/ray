@@ -41,12 +41,7 @@ func Add(a, b Tuple) Tuple {
 	newTup.x = a.x + b.x
 	newTup.y = a.y + b.y
 	newTup.z = a.z + b.z
-
-	if a.w == 1.0 && b.w == 1.0 {
-		newTup.w = 1.0
-	} else {
-		newTup.w = a.w + b.w
-	}
+	newTup.w = a.w + b.w
 
 	return newTup
 }
@@ -83,7 +78,7 @@ func (t *Tuple) Divide(scalar float64) {
 }
 
 func (t *Tuple) Magnitude() float64 {
-	mag := math.Sqrt(math.Pow(t.x, 2) + math.Pow(t.y, 2) + math.Pow(t.z, 2) + math.Pow(t.w, 2))
+	mag := math.Sqrt(math.Pow(t.x, 2) + math.Pow(t.y, 2) + math.Pow(t.z, 2))
 	return mag
 }
 
@@ -94,7 +89,7 @@ func (t *Tuple) Normalize() Tuple {
 	norm.x = t.x / mag
 	norm.y = t.y / mag
 	norm.z = t.z / mag
-	norm.w = t.w / mag
+	norm.w = t.w
 
 	return norm
 }
