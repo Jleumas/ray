@@ -1,3 +1,6 @@
+/*
+Package tuples provides low-level data primitives and operations required for use in a ray tracing library
+*/
 package tuples
 
 import (
@@ -13,6 +16,8 @@ func Equals(a, b float64) bool {
 	}
 }
 
+//Type Tuple provides the basic three-dimensional scalars 
+//and a field that designates whether the tuple is a point or a vector.
 type Tuple struct {
 	x, y, z, w float64
 }
@@ -70,11 +75,18 @@ func (t *Tuple) Multiply(scalar float64) {
 	t.w *= scalar
 }
 
-func (t *Tuple) Divide(scalar float64) {
-	t.x /= scalar
-	t.y /= scalar
-	t.z /= scalar
-	t.w /= scalar
+func (t *Tuple) Divide(divisor float64) {
+	if divisor == 0.0 {
+		t.x = 0.0
+		t.y = 0.0
+		t.z = 0.0
+		t.w = 0.0
+	} else {
+		t.x /= divisor
+		t.y /= divisor
+		t.z /= divisor
+		t.w /= divisor
+	}
 }
 
 func (t *Tuple) Magnitude() float64 {

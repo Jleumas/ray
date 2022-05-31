@@ -73,6 +73,7 @@ func TestTupleEquals(t *testing.T) {
 		{Tuple{-1.0, 2.0, -10.0, 0.0}, Tuple{-1.0, 2.0, -10.0, 0.0}, true},
 		{Tuple{1.0, 0.0, 8.0, 0.0}, Tuple{0.0, 0.0, 0.0, 0.0}, false},
 		{Tuple{0.0, 50.0, 0.0, 0.0}, Tuple{0.0, 0.0, 0.0, 0.0}, false},
+		{Point(1.0, 1.0, 1.0), Vector(1.0, 1.0, 1.0), false},
 	}
 
 	for _, testTup := range testTuples {
@@ -139,6 +140,7 @@ func TestNegate(t *testing.T) {
 		{Tuple{3.0, 2.0, 1.0, 1.0}, Tuple{-3.0, -2.0, -1.0, -1.0}},
 		{Tuple{1.0, 2.0, 3.0, 4.0}, Tuple{-1.0, -2.0, -3.0, -4.0}},
 		{Tuple{-1.0, -2.0, -3.0, 0.0}, Tuple{1.0, 2.0, 3.0, 0.0}},
+		{Tuple{0.0, 0.0, 0.0, 0.0}, Tuple{0.0, 0.0, 0.0, 0.0}},
 	}
 
 	for _, testTup := range testTuples {
@@ -163,6 +165,7 @@ func TestMultiply(t *testing.T) {
 	}{
 		{Tuple{1.0, -2.0, 3.0, -4.0}, 3.5, Tuple{3.5, -7.0, 10.5, -14.0}},
 		{Tuple{1.0, -2.0, 3.0, -4.0}, 0.5, Tuple{0.5, -1.0, 1.5, -2.0}},
+		{Tuple{0.0, 0.0, 0.0, 0.0}, 1.0, Tuple{0.0, 0.0, 0.0, 0.0}},
 	}
 
 	for _, testTup := range testTuples {
@@ -182,20 +185,22 @@ func TestMultiply(t *testing.T) {
 func TestDivide(t *testing.T) {
 	var testTuples = []struct {
 		a      Tuple
-		scalar float64
+		divisor float64
 		result Tuple
 	}{
 		{Tuple{1.0, -2.0, 3.0, -4.0}, 0.5, Tuple{2.0, -4.0, 6.0, -8.0}},
 		{Tuple{1.0, -2.0, 3.0, -4.0}, 2.0, Tuple{0.5, -1.0, 1.5, -2.0}},
+		{Tuple{0.0, 0.0, 0.0, 0.0}, 1.0, Tuple{0.0, 0.0, 0.0, 0.0}},
+		{Tuple{1.0, -2.0, 3.0, -4.0}, 0.0, Tuple{0.0, 0.0, 0.0, 0.0}},
 	}
 
 	for _, testTup := range testTuples {
-		testName := fmt.Sprintf("Dividing Tuple {%v, %v, %v, %v} by Scalar %v (Expected Result Tuple {%v, %v, %v, %v})",
+		testName := fmt.Sprintf("Dividing Tuple {%v, %v, %v, %v} by divisor %v (Expected Result Tuple {%v, %v, %v, %v})",
 			testTup.a.x, testTup.a.y, testTup.a.z, testTup.a.w,
-			testTup.scalar,
+			testTup.divisor,
 			testTup.result.x, testTup.result.y, testTup.result.z, testTup.result.w)
 		t.Run(testName, func(t *testing.T) {
-			testTup.a.Divide(testTup.scalar)
+			testTup.a.Divide(testTup.divisor)
 			if !TupleEquals(testTup.a, testTup.result) {
 				t.Errorf("Cannot correctly Divide tuples using standalone function!")
 			}
