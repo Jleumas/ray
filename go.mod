@@ -1,4 +1,4 @@
 module github.com/jleumas/ray
 
 
-go 1.16
+go 1.18
