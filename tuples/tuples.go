@@ -41,12 +41,14 @@ func TupleEquals(a Tuple, b Tuple) bool {
 	}
 }
 
-func Add(a, b Tuple) Tuple {
-	newTup := Tuple{}
-	newTup.x = a.x + b.x
-	newTup.y = a.y + b.y
-	newTup.z = a.z + b.z
-	newTup.w = a.w + b.w
+func Add(nums ...Tuple) Tuple {
+	newTup := Tuple{0.0, 0.0, 0.0, 0.0}
+	for _, num := range nums {
+		newTup.x += num.x
+		newTup.y += num.y
+		newTup.z += num.z
+		newTup.w += num.w
+	}
 
 	return newTup
 }
@@ -108,9 +110,9 @@ func (t *Tuple) Normalize() Tuple {
 
 func Dot(a, b Tuple) float64 {
 	dot := a.x*b.x +
-		a.y*b.y +
-		a.z*b.z +
-		a.w*b.w
+			a.y*b.y +
+			a.z*b.z +
+			a.w*b.w
 
 	return dot
 }
