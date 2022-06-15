@@ -16,10 +16,18 @@ func Equals(a, b float64) bool {
 	}
 }
 
-//Type Tuple provides the basic three-dimensional scalars 
+//Type Tuple provides the basic three-dimensional scalars
 //and a field that designates whether the tuple is a point or a vector.
 type Tuple struct {
 	x, y, z, w float64
+}
+
+func (t Tuple) IsPoint() bool {
+	if t.w == 1.0 {
+		return true
+	} else {
+		return false
+	}
 }
 
 func Point(x, y, z float64) Tuple {
@@ -110,9 +118,9 @@ func (t *Tuple) Normalize() Tuple {
 
 func Dot(a, b Tuple) float64 {
 	dot := a.x*b.x +
-			a.y*b.y +
-			a.z*b.z +
-			a.w*b.w
+		a.y*b.y +
+		a.z*b.z +
+		a.w*b.w
 
 	return dot
 }

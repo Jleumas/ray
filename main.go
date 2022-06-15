@@ -7,10 +7,38 @@ import (
 )
 
 func main() {
-	point := tuples.Point(1.0, 1.0, 1.0)
-	if point == tuples.Point(1.0, 1.0, 1.0) {
-		fmt.Println("Looks good")
-	} else {
-		fmt.Println("Looks bad")
+	projectile := Projectile{
+		tuples.Point(0.0, 1.0, 0.0),
+		tuples.Vector(1.0, 1.0, 0.0),
+	}
+
+	environment := Environment{
+		tuples.Vector(0.0, -0.1, 0.0),
+		tuples.Vector(-0.01, 0.0, 0.0),
+	}
+
+	for projectile.point.y > 0 {
+		projectile = tick(environment, projectile)
+		fmt.Println(projectile)
+	}
+
+}
+
+type Projectile struct {
+	point    tuples.Tuple
+	velocity tuples.Tuple
+}
+
+type Environment struct {
+	gravity tuples.Tuple
+	wind    tuples.Tuple
+}
+
+func tick(e Environment, p Projectile) Projectile {
+	p.point = tuples.Add(p.point, p.velocity)
+	p.velocity = tuples.Add(p.velocity, e.gravity, e.wind)
+	return Projectile{
+		p.point,
+		p.velocity,
 	}
 }
