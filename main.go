@@ -17,7 +17,7 @@ func main() {
 		tuples.Vector(-0.01, 0.0, 0.0),
 	}
 
-	for projectile.point.y > 0 {
+	for x := 0; x < 100; x++ {
 		projectile = tick(environment, projectile)
 		fmt.Println(projectile)
 	}
