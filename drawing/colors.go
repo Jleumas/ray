@@ -1,16 +1,17 @@
 package drawing
 
-import (
-	"github.com/jleumas/ray/tuples"
-)
-
 type Color struct {
-	tuples.Tuple
+	R, G, B float64
 }
 
-func Hadamard(color1, color2 Color) Color {
-	r := color1.X + color2.X
-	g := color1.Y + color2.Y
-	b := color1.Z + color2.Z
-	return Color{tuples.Tuple{r, g, b, 1.0}}
+func Hadamard(colors ...Color) Color {
+	color := Color{1.0, 1.0, 1.0}
+
+	for _, c := range colors {
+		color.R *= c.R
+		color.G *= c.G
+		color.B *= c.B
+	}
+
+	return color
 }
