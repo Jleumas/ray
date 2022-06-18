@@ -21,7 +21,6 @@ func main() {
 		projectile = tick(environment, projectile)
 		fmt.Println(projectile)
 	}
-
 }
 
 type Projectile struct {
