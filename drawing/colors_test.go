@@ -12,7 +12,7 @@ func TestHadamard(t *testing.T) {
 	}
 
 	for _, testC := range testColors {
-		t.Run("Hadamard", func(t *testing.T) {
+		t.Run("Compute Hadamard product of Colors", func(t *testing.T) {
 			product := Hadamard(testC.A, testC.B)
 			if !ColorEquals(product, testC.result) {
 				t.Errorf("Not working! Color{ %v, %v, %v} is product",
@@ -29,7 +29,7 @@ func TestAddColors(t *testing.T) {
 		{Color{0.9, 0.6, 0.75}, Color{0.7, 0.1, 0.25}, Color{1.6, 0.7, 1.0}},
 	}
 	for _, testC := range testColors {
-		t.Run("Add", func(t *testing.T) {
+		t.Run("Add Colors", func(t *testing.T) {
 			product := Add(testC.A, testC.B)
 			if !ColorEquals(product, testC.result) {
 				t.Errorf("Not working. Color{ %v, %v, %v} is product",
@@ -46,7 +46,7 @@ func TestSubtractColors(t *testing.T) {
 		{Color{0.9, 0.6, 0.75}, Color{0.7, 0.1, 0.25}, Color{0.2, 0.5, 0.5}},
 	}
 	for _, testC := range testColors {
-		t.Run("Subtract", func(t *testing.T) {
+		t.Run("Subtract Colors", func(t *testing.T) {
 			product := Subtract(testC.A, testC.B)
 			if !ColorEquals(product, testC.result) {
 				t.Errorf("Not working. Color{ %v, %v, %v} is product",
@@ -56,7 +56,7 @@ func TestSubtractColors(t *testing.T) {
 	}
 }
 
-func TestMultiplyColors(t *testing.T) {
+func TestMultiplyScalarColors(t *testing.T) {
 	var testColors = []struct {
 		A      Color
 		scalar float64
@@ -65,8 +65,8 @@ func TestMultiplyColors(t *testing.T) {
 		{Color{0.2, 0.3, 0.4}, 2.0, Color{0.4, 0.6, 0.8}},
 	}
 	for _, testC := range testColors {
-		t.Run("Multiply", func(t *testing.T) {
-			product := Multiply(testC.A, testC.scalar)
+		t.Run("Multiply Color by Scalar", func(t *testing.T) {
+			product := MultiplyScalar(testC.A, testC.scalar)
 			if !ColorEquals(product, testC.result) {
 				t.Errorf("Not working. Color{ %v, %v, %v} is product",
 					product.R, product.G, product.B)
