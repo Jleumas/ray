@@ -78,14 +78,16 @@ func (t *Tuple) Negate() {
 	t.W *= -1
 }
 
-func (t *Tuple) Multiply(scalar float64) {
+func Multiply(t Tuple, scalar float64) Tuple {
 	t.X *= scalar
 	t.Y *= scalar
 	t.Z *= scalar
 	t.W *= scalar
+
+	return t
 }
 
-func (t *Tuple) Divide(divisor float64) {
+func Divide(t Tuple, divisor float64) Tuple {
 	if divisor == 0.0 {
 		t.X = 0.0
 		t.Y = 0.0
@@ -97,14 +99,18 @@ func (t *Tuple) Divide(divisor float64) {
 		t.Z /= divisor
 		t.W /= divisor
 	}
+	return t
 }
 
-func (t *Tuple) Magnitude() float64 {
+func (t Tuple) Magnitude() float64 {
+	if t.W == 0.0 {
+		return 0.0
+	}
 	mag := math.Sqrt(math.Pow(t.X, 2) + math.Pow(t.Y, 2) + math.Pow(t.Z, 2))
 	return mag
 }
 
-func (t *Tuple) Normalize() Tuple {
+func (t Tuple) Normalize() Tuple {
 	norm := Tuple{}
 	mag := t.Magnitude()
 

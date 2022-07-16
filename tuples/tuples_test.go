@@ -174,9 +174,9 @@ func TestMultiply(t *testing.T) {
 			testTup.scalar,
 			testTup.result.X, testTup.result.Y, testTup.result.Z, testTup.result.W)
 		t.Run(testName, func(t *testing.T) {
-			testTup.a.Multiply(testTup.scalar)
-			if !TupleEquals(testTup.a, testTup.result) {
-				t.Errorf("Cannot correctly Multiply tuples using standalone function!")
+			test := Multiply(testTup.a, testTup.scalar)
+			if !TupleEquals(test, testTup.result) {
+				t.Errorf("Cannot correctly Multiply tuples")
 			}
 		})
 	}
@@ -200,9 +200,9 @@ func TestDivide(t *testing.T) {
 			testTup.divisor,
 			testTup.result.X, testTup.result.Y, testTup.result.Z, testTup.result.W)
 		t.Run(testName, func(t *testing.T) {
-			testTup.a.Divide(testTup.divisor)
-			if !TupleEquals(testTup.a, testTup.result) {
-				t.Errorf("Cannot correctly Divide tuples using standalone function!")
+			test := Divide(testTup.a, testTup.divisor)
+			if !TupleEquals(test, testTup.result) {
+				t.Errorf("Cannot correctly Divide tuples")
 			}
 		})
 	}
@@ -215,6 +215,7 @@ func TestMagnitude(t *testing.T) {
 	}{
 		{Tuple{1.0, 0.0, 0.0, 1.0}, 1.0},
 		{Tuple{0.0, 1.0, 0.0, 1.0}, 1.0},
+		{Tuple{0.0, 1.0, 1.0, 0.0}, 0.0},
 		{Tuple{0.0, 0.0, 1.0, 1.0}, 1.0},
 		{Tuple{1.0, 2.0, 3.0, 1.0}, math.Sqrt(14.0)},
 		{Tuple{-1.0, -2.0, -3.0, 1.0}, math.Sqrt(14.0)},
