@@ -47,3 +47,12 @@ func Subtract(c1, c2 Color) Color {
 
 	return newC
 }
+
+func Multiply(c Color, scalar float64) Color {
+	newC := Color{}
+	newC.R = c.R * scalar
+	newC.G = c.G * scalar
+	newC.B = c.B * scalar
+
+	return newC
+}

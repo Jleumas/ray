@@ -55,3 +55,22 @@ func TestSubtractColors(t *testing.T) {
 		})
 	}
 }
+
+func TestMultiplyColors(t *testing.T) {
+	var testColors = []struct {
+		A      Color
+		scalar float64
+		result Color
+	}{
+		{Color{0.2, 0.3, 0.4}, 2.0, Color{0.4, 0.6, 0.8}},
+	}
+	for _, testC := range testColors {
+		t.Run("Multiply", func(t *testing.T) {
+			product := Multiply(testC.A, testC.scalar)
+			if !ColorEquals(product, testC.result) {
+				t.Errorf("Not working. Color{ %v, %v, %v} is product",
+					product.R, product.G, product.B)
+			}
+		})
+	}
+}
