@@ -9,6 +9,15 @@ type Canvas struct {
 	pixels        [][]Color
 }
 
+func (canvas *Canvas) Init(height, width int) (error, Canvas) {
+	canvas.pixels = make([][]Color, height)
+	for i := 0; i < len(canvas.pixels[0]); i++ {
+		canvas.pixels[i] = make([]Color, width)
+	}
+
+	return nil, *canvas
+}
+
 func CanvasEquals(a, b *Canvas) bool {
 	if a.height != b.height {
 		return false
@@ -30,6 +39,10 @@ func CanvasEquals(a, b *Canvas) bool {
 	return true
 }
 
-func (c *Canvas) WritePixel(col Color, pos Position) {
-	c.pixels[pos.X][pos.Y] = col
+func (canvas *Canvas) WritePixel(col Color, pos Position) {
+	canvas.pixels[pos.X][pos.Y] = col
+}
+
+func (canvas *Canvas) GetPixel(p Position) Color {
+	return canvas.pixels[p.X][p.Y]
 }
