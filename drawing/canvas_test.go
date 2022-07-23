@@ -53,7 +53,7 @@ func TestCanvasEquals(t *testing.T) {
 
 	for _, testC := range testCanvas {
 		t.Run(testC.testDescription, func(t *testing.T) {
-			if !(CanvasEquals(&testC.A, &testC.B) == testC.result) {
+			if !(testC.A.CanvasEquals(&testC.B) == testC.result) {
 				t.Errorf("Not working! Failure: %v", testC.testDescription)
 			}
 		})
